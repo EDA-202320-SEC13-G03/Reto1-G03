@@ -140,8 +140,10 @@ def loadData3(control,tamaño):
 def print_partidos_ordenados(partido, N=NTH):
     # Crear una lista de listas para los datos de la tabla
     partidos_ordenados = controller.sortpartidos(partido)
+    
     headers = ["date", "home_team", "away_team", "home_score", 
-               "away_score", "tournament", "city", "country"]      
+               "away_score", "tournament", "city", "country"] 
+         
     data = [[partido["date"], partido["home_team"], partido["away_team"],
              partido["home_score"],partido["away_score"], partido["tournament"], 
              partido["city"], partido["country"], partido["neutral"]] for partido in partidos_ordenados[:N]]
