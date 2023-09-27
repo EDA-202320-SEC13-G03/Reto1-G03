@@ -131,14 +131,17 @@ def new_partido(date, home_team, away_team, home_score, away_score, tournament, 
     """
     Crea una nueva estructura para modelar los datos
     """
+    
+    
+    
     partido = {'date': "", 'home_team': "", 'away_team': "", 'home_score': 0, 'away_score': 0,
                'tournament': "", 'city': "", 'country': "", 'neutral': ""}
 
     partido['date'] = date
     partido['home_team'] = home_team
     partido['away_team'] = away_team
-    partido['home_score'] = home_score
-    partido['away_score'] = away_score
+    partido['home_score'] = int(home_score)
+    partido['away_score'] = int(away_score)
     partido['tournament'] = tournament
     partido['city'] = city
     partido['country'] = country
@@ -189,15 +192,28 @@ def primeros_y_ultimos(catalogo):
     lista = lt.newList('ARRAY_LIST')
     
     for result in catalogo:
+        
         if result == "partidos":
-           linea = catalogo[result]
-           index = lt.size(linea) -1
-           for pos in range(3):
-               primero = lt.getElement(linea, pos)
-               ultimo = lt.getElement(linea, index - pos)
-               lt.addFirst(lista, primero)
-               lt.addLast(lista, ultimo)
-               
+           sublista = catalogo[result]
+           index = lt.size(sublista) -1
+           merg.sort(sublista,partido_sort_criteria)
+           
+        elif result == "goleadores":   
+            sublista = catalogo[result]
+            index = lt.size(sublista) -1
+            merg.sort(sublista,compare_goleadores)
+            
+        elif result == "penales":
+            sublista = catalogo[result]
+            index = lt.size(sublista) -1
+            merg.sort(sublista,compare_penales)    
+           
+        for pos in range(3):
+            primero = lt.getElement(sublista, pos)
+            ultimo = lt.getElement(sublista, index - pos)
+            lt.addFirst(lista, primero)
+            lt.addLast(lista, ultimo)
+                  
     return lista
 
 def primeros_y_ultimos(sublista):
@@ -230,16 +246,19 @@ def ultimos_partidos_equipo_condicion(catalogo, N, equipo, condicion): #Requerim
         if condicion == "local":
             
             if contenido['home_team'] == equipo:
-            total_local += 1
-            total_partidos += 1
-        elif contenido['away_team'] == equipo:
-            total_visitante += 1
-            total_partidos += 1 
-    lt.addLast    
-        
-    
-    
-    
+                total_local += 1
+                total_partidos += 1
+                 
+        elif condicion == "vistante":
+            
+            if contenido['away_team'] == equipo:
+                 total_visitante += 1
+                 total_partidos += 1 
+        elif condicion == "indiferente":
+            if  contenido['home_team'] == equipo or contenido['away_team'] == equipo : 
+                total_partidos += 1   
+                    
+    lt.addLast(sublista,contenido)    
     
     return sublista, total_partidos
 
@@ -509,9 +528,6 @@ def req_7(catalogo, fecha_ini, fecha_fin, top_jugador):
     total_autogol = 0
      
     
-    if pos_inicial < pos_fin or pos_inicial == -1 or pos_fin == pos_fin:
-        return None,None,None,None,None,None
-    
     torneosP=lt.newList(datastructure='ARRAY_LIST')
     
     total_partidos = 0
@@ -659,9 +675,9 @@ def sortgoleadores(catalogo):
     Función encargada de ordenar la lista con los datos
     """
 
-    merg.sort(catalogo['goleadores'], compare_goleadores)
+    goleadores = merg.sort(catalogo['goleadores'], compare_goleadores)
 
-    pass
+    return goleadores
 
 
 def sortpenales(catalogo):
@@ -669,6 +685,6 @@ def sortpenales(catalogo):
     Función encargada de ordenar la lista con los datos
     """
 
-    merg.sort(catalogo['penales'], compare_goleadores)
+    penales = merg.sort(catalogo['penales'], compare_goleadores)
 
-    pass
+    return penales
