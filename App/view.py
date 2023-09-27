@@ -276,6 +276,9 @@ def print_req_7(control):
     """
         Función que imprime la solución del Requerimiento 7 en consola
     """
+    fecha_ini=input("ingrese la primera fecha inicial para la busqueda : ")
+    fecha_fin=input("infrese la seginda fecha para la busqueda")
+    jugador_top=input("Ingrese el nombre del jugador a buscar: ")
     result=controller.req_7(control,fecha_ini,fecha_fin,jugador_top)
     print(result)
 

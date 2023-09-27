@@ -196,7 +196,7 @@ def get_data(control, id):
     pass
 
 
-def req_1(control):
+def req_1(control, N, equipo, condicion):
     """
     Retorna el resultado del requerimiento 1
     """
