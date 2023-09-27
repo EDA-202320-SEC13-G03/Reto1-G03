@@ -382,8 +382,8 @@ def req_4(data_structure, n_torneo, fecha_ini, fecha_fin):
     """Partidos relacionados con un torneo durante un periodo específico"""
 
     
-    lista_partidos = data_structure["model"]["partidos"]
-    lista_penales = data_structure["model"]["penales"]
+    lista_partidos = data_structure["partidos"]
+    lista_penales = data_structure["penales"]
     #partidos y penales general
     list_fin_partidos = lt.newList("ARRAY_LIST")
     list_fin_penales = lt.newList("ARRAY_LIST")
@@ -441,6 +441,7 @@ def tabulate_add_req4(data_structure):
         elemento4=list(lt.getElement(data_structure,orden-2).values())
         elemento5=list(lt.getElement(data_structure,orden-1).values())
         elemento6=list(lt.getElement(data_structure,orden).values())
+        
         lista= titulos,[elemento,elemento2,elemento3,elemento4,elemento5,elemento6]
         
     return lista
