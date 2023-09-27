@@ -81,6 +81,12 @@ def new_data_structs_match():
 def add_partido(catalogo, partido):
     """
     Función para agregar nuevos partidos a la lista
+    
+    catalogo: Recibe la lista donde se van a añadir los datos, en este caso
+              catalogo['partidos']
+    partido: Recibe el partido (tipo diccionario) que se va a añadir en
+             la lista partidos ubicada en el catalogo
+    
     """
     # Se adiciona el partido a la lista de partidos
 
@@ -90,7 +96,6 @@ def add_partido(catalogo, partido):
 
     lt.addLast(catalogo['partidos'], p)
 
-    return catalogo
 
 
 def add_goleadores(catalogo, goleador):
@@ -105,7 +110,6 @@ def add_goleadores(catalogo, goleador):
 
     lt.addLast(catalogo['goleadores'], g)
 
-    return catalogo
 
 
 def add_penales(catalogo, penales):
@@ -119,7 +123,6 @@ def add_penales(catalogo, penales):
 
     lt.addLast(catalogo['penales'], pe)
 
-    return catalogo
 
 # Funciones para creacion de datos
 
@@ -179,17 +182,154 @@ def new_penales(date, home_team, away_team, winner):
 
 # Funciones de consulta
 
-def get_1(data_structs, id):
+def primeros_y_ultimos(catalogo):
     """
-    Retorna un dato a partir de su ID
+    Retorna los 3 primero y 3 ultimos a partir de un criterio de ordenamiento
     """
-    pass
+    lista = lt.newList('ARRAY_LIST')
+    
+    for result in catalogo:
+        if result == "partidos":
+           linea = catalogo[result]
+           index = lt.size(linea) -1
+           for pos in range(3):
+               primero = lt.getElement(linea, pos)
+               ultimo = lt.getElement(linea, index - pos)
+               lt.addFirst(lista, primero)
+               lt.addLast(lista, ultimo)
+               
+    return lista
 
-def get_2(data_structs, id):
+def primeros_y_ultimos(sublista):
     """
-    Retorna un dato a partir de su ID
+    Retorna los 3 primero y 3 ultimos a partir de un criterio de ordenamiento
     """
-    pass
+    lista = lt.newList('ARRAY_LIST')
+    
+    for contenido in lt.iterator(sublista):
+        index = lt.size(sublista)
+        for pos in range(1,3):
+            primero = lt.getElement(sublista, pos)
+            ultimo = lt.getElement(sublista, index - pos)
+            lt.addFirst(lista, primero)
+            lt.addLast(lista, ultimo)
+            merg.sort(lista, criterio)
+               
+    return lista
+
+def ultimos_partidos_equipo_condicion(catalogo, N, equipo, condicion): #Requerimiento 1
+    
+    partidos = catalogo['partidos']
+    sublista = lt.newList()
+    total_local= 0
+    total_visitante = 0
+    total_partidos = 0
+    
+    for contenido in lt.iterator(partidos):
+        
+        if condicion == "local":
+            
+            if contenido['home_team'] == equipo:
+            total_local += 1
+            total_partidos += 1
+        elif contenido['away_team'] == equipo:
+            total_visitante += 1
+            total_partidos += 1 
+    lt.addLast    
+        
+    
+    
+    
+    
+    return sublista, total_partidos
+
+def primeros_N_goles_jugador(catalogo, N, jugador): #Requerimiento 2
+
+    """
+    Retorna los N primeros goles de un jugador 
+    """
+    goleadores = catalogo['goleadores']
+    lista = lt.newList('ARRAY_LIST')
+    sublista = lt.newList('ARRAY?LIST')
+    total = 0
+    
+    for contenido in lt.iterator(goleadores):
+        if contenido['scorer'] == jugador:
+           lt.addLast(lista,contenido)
+           total += 1
+        
+           index = lt.size(lista) -1
+           merg.sort(lista, compare_fecha_minuto_gol)
+           for pos in range(N):
+               primeros = lt.getElement(lista, pos)
+               lt.addLast(sublista, primeros)
+               
+    return sublista, total    
+
+def obtener_partidos_equipo_por_periodo(catalogo, equipo, fecha_inicial, fecha_final): # Requerimiento 3
+    """
+    Retorna una lista de datos a partir de in periodo definido
+    """
+    partidos = catalogo['partidos']
+    sublista = lt.newList('ARRAY_LIST')
+    total = 0
+    
+    for contenido in lt.iterator(partidos):
+        if contenido['home_team'] or contenido['away_team'] == equipo:
+            if int(contenido['date']) >= fecha_inicial and int(contenido['date']) <= fecha_final:
+                lt.addLast(sublista,contenido)
+                total +=1
+    return sublista, total  
+
+def obtener_partidos_torneo_por_periodo(catalogo, torneo, fecha_inicial, fecha_final): # Requerimiento 3
+    """
+    Retorna una lista de datos a partir de in periodo definido
+    """
+    partidos = catalogo['partidos']
+    penales = catalogo['penales']
+    
+    sublista = lt.newList('ARRAY_LIST')
+    
+    total_partidos = 0
+    total_paises = 0
+    total_penales = 0
+    total_ciudades = 0
+    total_tandas_penal = 0
+
+    
+    for contenido in lt.iterator(partidos):
+        for contenido_penales in lt.iterator(penales):
+            if contenido['home_team'] or contenido['away_team'] == equipo:
+                if int(contenido['date']) >= fecha_inicial and int(contenido['date']) <= fecha_final:
+                lt.addLast(sublista,contenido)
+                total +=1
+    return sublista, total  
+
+def obtener_goles_jugador_por_periodo(catalogo, nombre, fecha_inicial, fecha_final): # Requerimiento 5
+    """
+    Retorna una lista de datos a partir de in periodo definido
+    """
+    partidos = catalogo['goleadores']
+    sublista = lt.newList('ARRAY_LIST')
+    total_goles = 0
+    # total_torneos = 0
+    total_penales = 0
+    total_autogoles =0
+    
+    for contenido in lt.iterator(partidos):
+        if contenido['scorer'] == nombre:
+            if int(contenido['date']) >= fecha_inicial and int(contenido['date']) <= fecha_final:
+               
+               if contenido['penalty'] == True:
+                   total_penales += 1
+               elif contenido['autogol'] == True:
+                   total_autogoles += 1   
+
+            lt.addLast(sublista,contenido)
+            total_goles +=1
+
+    return sublista, total_goles, total_autogoles, total_penales
+  
 
 def get_3(data_structs, id):
     """
@@ -241,114 +381,7 @@ def penales_size(catalogo):
     penales = catalogo['penales']
     return lt.size(penales)
 
-#para el requerimiento 7
-def b_binaria_fecha_incio(data_structs, start):
-    
-    """Busqueda binaria para encontrar una fecha de inicio"""
-    
-    min = 1
-    max = lt.size(data_structs)
 
-    primero = (lt.firstElement(data_structs))['date']
-    ultimo = (lt.lastElement(data_structs))['date']
-    
-    if start > primero:
-        return -1
-
-    #Confirmar que la fecha está en la lista en una posición de la mitad.
-    if start >= ultimo:
-
-        #Buscar un día antes para evitar errores al no encontrar la fecha mínima que coincide
-        prev = start - timedelta(days=1)
-
-        i = lt.size(data_structs)
-        #Busqueda binaria
-        while min <= max:
-            mitad = (min + max) // 2
-            team = lt.getElement(data_structs, min)
-            mitad_date = team['date']
-            if mitad_date == prev:
-                i = mitad
-                pass
-            elif  mitad_date > prev:
-                low = mitad + 1
-            else:
-                high = mitad - 1
-            
-            if min == max:
-                i = mitad
-            i = mitad
-                
-        encontro = False
-        #Iterar hacia atrás para encontrar la primera fecha que coincide
-        while not encontro:
-            result = lt.getElement(data_structs, i)
-            date = result['date']
-            if date >= start:
-                #Se encuentra la fecha
-                return i
-            else:
-                #Se sigue iterando
-                i -= 1
-
-            if i <= 0:
-                return -1
-    else:
-        #Retornar posición de la fecha más antigua
-        return lt.size(data_structs)
-    
-def b_binaria_fecha_final(data_structs, fin):
-    
-    """Busqueda binaria para encontrar una fecha de inicio"""
-    
-    min = 1
-    max = lt.size(data_structs)
-
-    primero = (lt.firstElement(data_structs))['date']
-    ultimo = (lt.lastElement(data_structs))['date']
-    
-    if fin < primero:
-        return -1
-
-    #Confirmar que la fecha está en la lista en una posición de la mitad.
-    if fin <= ultimo:
-
-        #Buscar un día despues para evitar errores al no encontrar la fecha mínima que coincide
-        sig = fin + timedelta(days=1)
-
-        i = 1
-        #Busqueda binaria
-        while min <= max:
-            mitad = (min + max) // 2
-            team = lt.getElement(data_structs, min)
-            mitad_date = team['date']
-            if mitad_date == sig:
-                i = mitad
-                pass
-            elif  mitad_date > sig:
-                low = mitad + 1
-            else:
-                high = mitad - 1
-            
-            if min == max:
-                i = mitad
-            i = mitad
-                
-        encontro = False
-        #Iterar hacia adelante para encontrar la primera fecha que coincide
-        while not encontro:
-            if i > 0 and i < lt.size(data_structs):
-
-                date = (lt.getElement(data_structs, i))['date']
-                if date <= fin:
-
-                    return i
-                else:
-                    i += 1
-            else:
-                return 1
-    else:
-        return 1
     
 
 
@@ -461,16 +494,19 @@ def req_6(data_structs):
     pass
 
 
-def req_7(data_structs, fecha_ini, fecha_fin, top_jugador):
+def req_7(catalogo, fecha_ini, fecha_fin, top_jugador):
     """
     Función que soluciona el requerimiento 7
     """
     # TODO: Realizar el requerimiento 7
     
-    result=data_structs['partidos']
-    
-    pos_inicial=b_binaria_fecha_incio(result,fecha_ini)
-    pos_fin=b_binaria_fecha_final(result,fecha_fin)
+    result=catalogo['partidos']
+    total_anotadores = 0
+    total_torneos= 0 
+    total_goles = 0 
+    goles_penal = 0
+    total_autogol = 0
+     
     
     if pos_inicial < pos_fin or pos_inicial == -1 or pos_fin == pos_fin:
         return None,None,None,None,None,None
@@ -531,11 +567,19 @@ def compare_score(home_score_1, away_score_1, home_score_2, away_score_2):
     return False
 
 
-def compare_minuto_gol(minute1, minute2):
+def compare_fecha_minuto_gol(goleador1, goleador2):
     
+    date1 = datetime.datetime.strptime(goleador1["date"], "%Y-%m-%d")
+    date2 = datetime.datetime.strptime(goleador2["date"], "%Y-%m-%d")
     
+    if date1 < date2:
+        return True
+    elif date1 == date2:
+        if goleador1["minute"] < goleador2["minute"]:
+            return True
+    return False
 
-    return
+    
 
 
 def compare_nombre_goleador(nombre1, nombre2):
@@ -544,6 +588,7 @@ def compare_nombre_goleador(nombre1, nombre2):
 
 #req7
 def comparar_name(team1,team2):
+    
     t1 = team1.lower()
     t2 = team2['name'].lower()
 
