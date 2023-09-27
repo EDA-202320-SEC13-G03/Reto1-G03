@@ -201,8 +201,11 @@ def req_1(control):
     Retorna el resultado del requerimiento 1
     """
     # TODO: Modificar el requerimiento 1
-    pass
-
+    tiempo1=get_time()
+    sublista, total_partidos= model.req_1(control, N, equipo, condicion)
+    tiempo2=get_time()
+    time_fin=delta_time(tiempo1,tiempo2)
+    return sublista, total_partidos,time_fin
 
 def req_2(control):
     """

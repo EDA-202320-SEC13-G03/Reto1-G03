@@ -201,7 +201,10 @@ def print_req_1(control):
         Función que imprime la solución del Requerimiento 1 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 1
-    pass
+    N=int(input("Ingrese el numero de partidos a buscar: "))
+    equipo=input("Ingrese el nombre del equipo a buscar")
+    condicion=input("Ingrese si el equipo es visitante o local: ")
+    sublista, total_partidos,time_fin=controller.req_1(control, N, equipo, condicion)
 
 
 def print_req_2(control):
