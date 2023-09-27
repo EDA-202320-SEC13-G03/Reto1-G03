@@ -220,12 +220,19 @@ def req_3(control):
     pass
 
 
-def req_4(control):
+def req_4(control,n_torneo, fecha_ini, fecha_fin):
     """
     Retorna el resultado del requerimiento 4
     """
     # TODO: Modificar el requerimiento 4
-    pass
+    ini = datetime.strptime(fecha_ini, "%Y-%m-%d")
+    fin = datetime.strptime(fecha_fin, "%Y-%m-%d")
+    tiempo1 = get_time()
+    if fin >= ini:
+        tabular_fin_partidos, ciudades, paises, total_partidos, penaltis = model.req_4(control, n_torneo, ini, fin)
+        tiempo2 = get_time()
+        time_fin=delta_time(tiempo1,tiempo2)
+    return tabular_fin_partidos, ciudades, paises, total_partidos, penaltis, time_fin 
 
 
 def req_5(control):

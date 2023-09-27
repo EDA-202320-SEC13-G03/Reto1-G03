@@ -223,8 +223,33 @@ def print_req_4(control):
         Función que imprime la solución del Requerimiento 4 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 4
-    pass
+    print("////////////busqueda de equipos/////////")
+    
+    fecha_ini=input("Ingresa la primera fecha Inicial: ")
+    
+    fecha_fin=input("Ingresa la segunda fecha Final: ")
+    
+    n_torneo=input("Ingresa el nombre del torneo: ")
+    
+    tabular_fin_partidos, ciudades, paises, total_partidos, penaltis, time_fin =controller.req_4(control,n_torneo,fecha_ini,fecha_fin)
+    
+    print("Partidos totales de {0}: {1} ".format(n_torneo,total_partidos) )
+    print("")
+    print('Paises totales que participaron en {0}: {1} '.format(n_torneo,paises))
+    print("")
+    print('ciudades totales que participaron en {0}: {1} '.format(n_torneo, ciudades))
+    print("")
+    print('total de partidos definidos por penales en el {0}: {1} '.format(n_torneo,penaltis))
+    print("")
+    
+    if tabular_fin_partidos==[]:
+        print("no se encontro partidos en el tiempo.")
+    else:
+        print(tabulate(tabular_fin_partidos[1],headers=tabular_fin_partidos[0],tablefmt="simple_grid"))
+    print("el tiempo ejecutado del programa es: ",str(time_fin), 'ms')    
 
+    # Se filtran los datos para que queden en orden como en el pdf 
+    
 
 def print_req_5(control):
     """

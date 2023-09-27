@@ -421,10 +421,29 @@ def req_4(data_structure, n_torneo, fecha_ini, fecha_fin):
 
     num_ciudades = lt.size(lt_ciudad)
     num_paises = lt.size(lt_paises)
-    total_matches = lt.size(list_fin_partidos)
+    total_partidos = lt.size(list_fin_partidos)
+    
+    tabular_fin_partidos=tabulate_add_req4(list_fin_partidos)
 
-    return list_fin_partidos, num_ciudades, num_paises, total_matches, penales
+    return tabular_fin_partidos, num_ciudades, num_paises, total_partidos, penales
 
+def tabulate_add_req4(data_structure):
+    orden= lt.size(data_structure)
+    if orden == 0:
+        lista=[]
+    else:
+        titulos= list(lt.getElement(data_structure, 2).keys())
+        
+        elemento=list(lt.getElement(data_structure,1).values())
+        elemento2=list(lt.getElement(data_structure,2).values())
+        elemento3=list(lt.getElement(data_structure,3).values())
+        
+        elemento4=list(lt.getElement(data_structure,orden-2).values())
+        elemento5=list(lt.getElement(data_structure,orden-1).values())
+        elemento6=list(lt.getElement(data_structure,orden).values())
+        lista= titulos,[elemento,elemento2,elemento3,elemento4,elemento5,elemento6]
+        
+    return lista
 
 def req_5(data_structs):
     """
@@ -464,7 +483,7 @@ def req_7(data_structs, fecha_ini, fecha_fin, top_jugador):
     num_autogoles = 0
     
     for partido in lt.iterator(data_structs['partidos']):
-        if partido['date'] <= fecha_i and partido['date'] >= fecha_L and partido['tournament'] != "Friendly":
+        if partido['date'] <= fecha_ini and partido['date'] >= fecha_fin and partido['tournament'] != "Friendly":
             lt.addLast(torneosP, partido)
     
     print(torneosP)
